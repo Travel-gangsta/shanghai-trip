@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>แพลนเที่ยวเซี่ยงไฮ้ ซ่างเรา หังโจว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F2F7F4; --surface:#FFFFFF; --ink:#18263F; --muted:#56667A; --line:#D3E1D9;
+  --indigo:#1E3556; --jade:#2F7F6C; --jade-soft:#DDEFE8; --seal:#C2403B; --seal-soft:#FBE4E1;
+  --gold:#E3B04B; --gold-soft:#FBF0D6; --sky:#CFE6EC; --water:#9CCFC2;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0E1920; --surface:#16252E; --ink:#E8F0EC; --muted:#9FB2BE; --line:#294049;
+    --indigo:#0A1219; --jade:#6FC3AB; --jade-soft:#1B3A34; --seal:#EE7B74; --seal-soft:#3B1E1F;
+    --gold:#E8BB5A; --gold-soft:#3A3119; --sky:#1B3544; --water:#2C5A62;
+    color-scheme: dark;
+  }
+}
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Sarabun", "Noto Sans Thai", system-ui, sans-serif;
+  font-size: 17px; line-height: 1.65;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+h1, h2, h3, h4 { font-family: "Prompt", "Noto Sans Thai", system-ui, sans-serif; line-height: 1.3; margin: 0; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 100px; }
+
+.state { text-align: center; padding: 90px 20px; color: var(--muted); }
+.state b { display: block; font-family: "Prompt", sans-serif; color: var(--ink); font-size: 1.15rem; margin-bottom: 6px; }
+.state button { margin-top: 16px; }
+
+.hero { margin: 0 -16px 20px; background: var(--sky); }
+.hero svg { display: block; width: 100%; height: auto; }
+.hero-text { padding: 20px 20px 22px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.hero h1 { font-size: 1.9rem; font-weight: 700; }
+.hero p { margin: 6px 0 0; color: var(--muted); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.fact { background: var(--jade-soft); border-radius: 999px; padding: 4px 14px; font-size: .92rem; font-weight: 500; }
+
+.chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0 0 28px; padding: 0; list-style: none; }
+.chips a { display: block; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; height: 100%; }
+.chips a:hover, .chips a:focus-visible { border-color: var(--jade); outline: 2px solid var(--jade); outline-offset: 2px; }
+.chips b { font-family: "Prompt", sans-serif; display: block; font-size: .95rem; }
+.chips span { color: var(--muted); font-size: .88rem; line-height: 1.35; display: block; }
+
+.block { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 20px; margin-bottom: 22px; }
+.block h2 { font-size: 1.25rem; margin-bottom: 10px; }
+
+.flightgrid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 620px) { .flightgrid { grid-template-columns: 1fr 1fr; } }
+.flight { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.flight h3 { font-size: 1rem; }
+.flight .leg { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; font-size: .95rem; }
+.flight .leg em { font-style: normal; color: var(--muted); }
+.flight .bag { margin: 8px 0 0; font-size: .88rem; color: var(--muted); }
+.paytable { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: .95rem; }
+.paytable td { padding: 6px 4px; border-top: 1px solid var(--line); }
+.paytable td:last-child { text-align: right; font-weight: 600; }
+
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; margin-bottom: 26px; }
+.banner svg { display: block; width: 100%; height: auto; }
+.dayhead { padding: 16px 18px 6px; }
+.dayhead small { color: var(--jade); font-weight: 600; font-family: "Prompt", sans-serif; font-size: .9rem; }
+.dayhead h2 { font-size: 1.35rem; margin-top: 2px; }
+.dayhead p { margin: 4px 0 0; color: var(--muted); font-size: .95rem; }
+.tl { list-style: none; margin: 0; padding: 8px 18px 18px; }
+.stop { display: grid; grid-template-columns: 62px 1fr; gap: 0 12px; position: relative; padding: 12px 0; }
+.stop::before { content: ""; position: absolute; left: 70px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+.stop:first-child::before { top: 24px; }
+.stop:last-child::before { bottom: calc(100% - 24px); }
+.when { font-family: "Prompt", sans-serif; font-weight: 600; font-size: .95rem; text-align: right; color: var(--jade); padding-top: 1px; }
+.what { position: relative; padding-left: 18px; }
+.what::before { content: ""; position: absolute; left: -7px; top: 8px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 3px solid var(--jade); }
+.stop.key .what::before { border-color: var(--seal); background: var(--seal); }
+.what h3 { font-size: 1.05rem; font-weight: 600; }
+.what p { margin: 3px 0 0; font-size: .96rem; color: var(--muted); }
+.route { margin: 6px 0 0; font-size: .95rem; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.route i { font-style: normal; color: var(--muted); font-size: .85rem; }
+.ln { display: inline-block; min-width: 26px; text-align: center; padding: 0 7px; border-radius: 7px; font-family: "Prompt", sans-serif; font-weight: 600; font-size: .85rem; color: #fff; line-height: 1.6; background: var(--muted); }
+.l1 { background: #E4002B; } .l2 { background: #8CC63F; color: #1b2a10; } .l3 { background: #FCD600; color: #2a2500; }
+.l4 { background: #5C2D91; } .l5 { background: #AC4FC6; } .l6 { background: #D40F7D; } .l7 { background: #FF7200; }
+.l8 { background: #009EDB; } .l9 { background: #87CEEB; color: #10303f; } .l10 { background: #C7AFD3; color: #2a1a33; }
+.l11 { background: #76232F; } .l12 { background: #007A60; } .l13 { background: #E999C0; color: #3a1226; }
+.l14 { background: #6B6A22; } .l15 { background: #BCA886; color: #2e2616; } .l16 { background: #32D2CA; color: #07332f; }
+.l17 { background: #BB796F; } .l18 { background: #C4994E; color: #2e2008; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tag { font-size: .84rem; padding: 1px 10px; border-radius: 999px; background: var(--gold-soft); }
+.tag.red { background: var(--seal-soft); }
+.tag.green { background: var(--jade-soft); }
+.note { margin: 10px 18px 18px; padding: 10px 14px; border-radius: 12px; background: var(--gold-soft); font-size: .93rem; }
+.note.red { background: var(--seal-soft); }
+.eats { margin: 0 18px 8px; padding: 12px 14px; border: 1px dashed var(--line); border-radius: 14px; }
+.eats h3 { font-size: 1rem; margin-bottom: 4px; }
+.eats ul { margin: 6px 0 0; padding-left: 20px; font-size: .95rem; }
+.eats li { margin: 3px 0; }
+
+.check { list-style: none; margin: 0; padding: 0; }
+.check li { border-top: 1px solid var(--line); }
+.check li:first-child { border-top: 0; }
+.check label { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; cursor: pointer; }
+.check input { margin-top: 6px; width: 18px; height: 18px; accent-color: var(--jade); flex: none; }
+.check span small { display: block; color: var(--muted); font-size: .88rem; line-height: 1.4; }
+.flags { margin: 0; padding-left: 20px; }
+.flags li { margin: 8px 0; }
+footer { text-align: center; color: var(--muted); font-size: .88rem; margin-top: 10px; }
+
+.btn { font: 600 .95rem "Prompt", "Noto Sans Thai", sans-serif; background: var(--ink); color: var(--bg); border: 0; border-radius: 999px; padding: 10px 18px; box-shadow: 0 2px 10px rgba(0,0,0,.28); cursor: pointer; }
+.btn:disabled { opacity: .6; cursor: default; }
+.bar { position: fixed; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 20; display: flex; gap: 8px; }
+.btn.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.btn.danger { background: var(--seal); color: #fff; }
+
+/* โหมดแก้ไข */
+.dayhead { position: relative; }
+.ed-pill { position: absolute; right: 0; top: 2px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: .95rem; padding: 0; line-height: 1; }
+.ed-pill.inline { position: static; width: 28px; height: 28px; margin-left: 6px; vertical-align: middle; }
+.dayhead .ed-pill { right: 14px; top: 14px; }
+.editing .what { padding-right: 44px; }
+.editing .dayhead h2 { padding-right: 44px; }
+.ed-add { display: block; width: calc(100% - 36px); margin: 0 18px 18px; padding: 10px; border: 1px dashed var(--jade); background: var(--jade-soft); color: var(--ink); border-radius: 12px; font: inherit; cursor: pointer; }
+dialog.dlg { border: 1px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--ink); width: min(520px, calc(100% - 24px)); padding: 18px 18px 16px; max-height: calc(100% - 24px); overflow: auto; }
+dialog.dlg::backdrop { background: rgba(0,0,0,.45); }
+dialog.dlg[open]:not(:modal) { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 50; }
+.dlg h3 { font-size: 1.1rem; margin-bottom: 10px; }
+.dlg .hint { margin: 0 0 10px; color: var(--muted); font-size: .9rem; }
+.f { margin-bottom: 10px; }
+.f label { display: block; font-size: .88rem; color: var(--muted); margin-bottom: 2px; }
+.f input[type=text], .f input[type=password], .f textarea, .f select { width: 100%; font: inherit; font-size: 16px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); }
+.f small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.35; margin-top: 2px; }
+.row2 { display: grid; grid-template-columns: 1fr 90px; gap: 10px; }
+.chk { display: flex; gap: 8px; align-items: center; font-size: .95rem; margin-bottom: 10px; }
+.dbtn { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 12px; }
+.err { color: var(--seal); font-size: .9rem; min-height: 1.2em; margin: 4px 0 0; }
+a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+@media (max-width: 420px) { .hero h1 { font-size: 1.6rem; } .stop { grid-template-columns: 54px 1fr; } .stop::before { left: 62px; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="s-cloud" viewBox="0 0 100 40"><ellipse cx="30" cy="26" rx="26" ry="12"/><ellipse cx="58" cy="20" rx="24" ry="14"/><ellipse cx="76" cy="28" rx="20" ry="10"/></symbol>
+    <symbol id="s-plane" viewBox="0 0 140 56"><path d="M4 28 L50 22 L82 2 L94 4 L78 24 L124 22 L136 28 L124 34 L78 32 L94 52 L82 54 L50 34 L4 30 Z"/></symbol>
+    <symbol id="s-train" viewBox="0 0 220 44"><path d="M0 34 V20 Q0 8 22 6 H150 Q205 8 220 32 V34 Z"/><g fill="var(--sky)"><rect x="30" y="12" width="22" height="9" rx="2"/><rect x="62" y="12" width="22" height="9" rx="2"/><rect x="94" y="12" width="22" height="9" rx="2"/><rect x="126" y="12" width="22" height="9" rx="2"/><path d="M168 12 H186 L200 24 H168 Z"/></g><rect x="0" y="38" width="220" height="3" fill="var(--gold)"/></symbol>
+    <symbol id="s-pagoda" viewBox="0 0 60 112"><rect x="29" y="0" width="2" height="10"/><path d="M30 8 L42 24 H18 Z"/><rect x="22" y="24" width="16" height="12"/><path d="M30 34 L47 52 H13 Z"/><rect x="19" y="52" width="22" height="14"/><path d="M30 64 L52 84 H8 Z"/><rect x="15" y="84" width="30" height="16"/><rect x="4" y="100" width="52" height="8"/></symbol>
+    <symbol id="s-tree" viewBox="0 0 60 90"><path d="M30 6 L50 38 H38 L56 66 H4 L22 38 H10 Z"/><rect x="26" y="66" width="8" height="16"/></symbol>
+  </defs>
+</svg>
+
+<main class="wrap" id="app">
+  <div class="state"><b>กำลังโหลดแพลน…</b>ดึงข้อมูลล่าสุดจาก Google Sheet</div>
+</main>
+<div class="bar" id="bar" hidden>
+  <button type="button" class="btn ghost" id="editbtn">✏️ แก้ไข</button>
+  <button type="button" class="btn" id="refresh">🔄 รีเฟรช</button>
+</div>
+<dialog class="dlg" id="dlg"></dialog>
+
+<script>
+(function () {
+  'use strict';
+
+  var app = document.getElementById('app');
+  var refreshBtn = document.getElementById('refresh');
+  var barEl = document.getElementById('bar');
+  var editBtn = document.getElementById('editbtn');
+  var TKEY = 'sh-trip-todo-v2';
+
+  // ===== ตั้งค่าตอนเอาไปไว้ที่ GitHub Pages =====
+  // วาง URL ของ Web App ที่ลงท้ายด้วย /exec เช่น 'https://script.google.com/macros/s/xxxxxxxx/exec'
+  // ถ้าเปิดผ่าน Apps Script โดยตรง ไม่ต้องใส่ (ปล่อยว่างไว้ได้)
+  var API_URL = 'https://script.google.com/macros/s/AKfycbx0cb_KtOpZdVHff8lpCFO-VaUaDTGqpCrgcwAFx67qeUKhTecaLU72lJHgHVlgOG_F/exec';
+
+  var editMode = false, lastData = null, pin = '';
+  try { pin = sessionStorage.getItem('trip-pin') || ''; } catch (e) {}
+
+  var HERO_SVG = '<svg viewBox="0 0 760 210" role="img" aria-label="ภาพวาดเส้นขอบฟ้าเซี่ยงไฮ้ริมแม่น้ำหวงผู่">' +
+    '<rect width="760" height="210" fill="var(--sky)"/><circle cx="620" cy="62" r="30" fill="var(--gold)"/>' +
+    '<g fill="var(--indigo)"><rect x="30" y="128" width="44" height="82"/><rect x="82" y="108" width="36" height="102"/><rect x="128" y="138" width="50" height="72"/><rect x="186" y="118" width="32" height="92"/>' +
+    '<rect x="252" y="64" width="6" height="146"/><circle cx="255" cy="150" r="19"/><circle cx="255" cy="102" r="12"/><circle cx="255" cy="64" r="6"/><path d="M236 210 L255 150 L274 210 Z" opacity=".85"/>' +
+    '<path d="M318 210 L330 78 L350 16 L370 78 L382 210 Z"/><rect x="416" y="54" width="64" height="156"/>' +
+    '<path d="M500 210 V90 H514 V74 H524 V58 H532 V74 H542 V90 H556 V210 Z"/><rect x="572" y="124" width="40" height="86"/><rect x="620" y="104" width="34" height="106"/><rect x="662" y="136" width="46" height="74"/><rect x="714" y="116" width="30" height="94"/></g>' +
+    '<rect x="436" y="64" width="24" height="26" fill="var(--sky)"/>' +
+    '<path d="M0 196 Q60 184 120 196 T240 196 T360 196 T480 196 T600 196 T720 196 T840 196 V210 H0 Z" fill="var(--water)"/>' +
+    '<g fill="#fff" opacity=".8"><use href="#s-cloud" x="40" y="18" width="110" height="44"/><use href="#s-cloud" x="470" y="26" width="90" height="36"/></g></svg>';
+
+  var BANNERS = {
+    'plane-city': '<svg viewBox="0 0 760 120" role="img" aria-label="เครื่องบินและเจดีย์"><rect width="760" height="120" fill="var(--sky)"/>' +
+      '<g fill="#fff" opacity=".8"><use href="#s-cloud" x="260" y="14" width="100" height="40"/><use href="#s-cloud" x="500" y="40" width="80" height="32"/></g>' +
+      '<g fill="var(--indigo)"><use href="#s-plane" x="60" y="26" width="140" height="56"/><use href="#s-pagoda" x="618" y="6" width="64" height="112"/></g>' +
+      '<rect x="0" y="108" width="760" height="12" fill="var(--water)"/></svg>',
+    'train-mountain': '<svg viewBox="0 0 760 120" role="img" aria-label="รถไฟความเร็วสูงวิ่งผ่านภูเขา"><rect width="760" height="120" fill="var(--sky)"/>' +
+      '<g fill="#fff" opacity=".8"><use href="#s-cloud" x="80" y="10" width="100" height="40"/><use href="#s-cloud" x="560" y="22" width="90" height="36"/></g>' +
+      '<path d="M0 96 L110 40 L190 80 L300 24 L420 88 L520 46 L640 84 L760 36 V120 H0 Z" fill="var(--jade)" opacity=".55"/>' +
+      '<path d="M0 108 L90 70 L200 100 L330 62 L470 106 L600 72 L760 104 V120 H0 Z" fill="var(--jade)"/>' +
+      '<g fill="var(--indigo)"><use href="#s-train" x="250" y="62" width="220" height="44"/></g><rect x="0" y="108" width="760" height="3" fill="var(--indigo)"/></svg>',
+    'train-city': '<svg viewBox="0 0 760 120" role="img" aria-label="รถไฟและตึกแถวซินเทียนตี้"><rect width="760" height="120" fill="var(--sky)"/>' +
+      '<g fill="#fff" opacity=".8"><use href="#s-cloud" x="40" y="18" width="90" height="36"/><use href="#s-cloud" x="590" y="8" width="100" height="40"/></g>' +
+      '<g fill="var(--indigo)"><rect x="450" y="62" width="40" height="46"/><path d="M446 62 L470 44 L494 62 Z"/><rect x="500" y="56" width="40" height="52"/><path d="M496 56 L520 38 L544 56 Z"/>' +
+      '<rect x="550" y="66" width="40" height="42"/><path d="M546 66 L570 48 L594 66 Z"/><rect x="600" y="58" width="40" height="50"/><path d="M596 58 L620 40 L644 58 Z"/><use href="#s-train" x="90" y="64" width="220" height="44"/></g>' +
+      '<g fill="var(--gold)"><circle cx="470" cy="80" r="5"/><circle cx="520" cy="78" r="5"/><circle cx="570" cy="84" r="5"/><circle cx="620" cy="80" r="5"/></g>' +
+      '<rect x="0" y="108" width="760" height="12" fill="var(--jade)" opacity=".5"/></svg>',
+    'bund': '<svg viewBox="0 0 760 120" role="img" aria-label="อาคารริมแม่น้ำและต้นคริสต์มาส"><rect width="760" height="120" fill="var(--sky)"/><circle cx="120" cy="34" r="16" fill="var(--gold)"/>' +
+      '<g fill="var(--indigo)"><rect x="250" y="52" width="60" height="56"/><path d="M250 52 Q280 20 310 52 Z"/><rect x="320" y="40" width="50" height="68"/><rect x="340" y="22" width="10" height="18"/>' +
+      '<rect x="380" y="58" width="70" height="50"/><path d="M380 58 L415 38 L450 58 Z"/><rect x="460" y="46" width="46" height="62"/></g>' +
+      '<g fill="var(--jade)"><use href="#s-tree" x="580" y="14" width="60" height="90"/></g>' +
+      '<path d="M610 6 L614 16 L626 16 L616 22 L620 32 L610 26 L600 32 L604 22 L594 16 L606 16 Z" fill="var(--gold)"/>' +
+      '<g fill="var(--seal)"><circle cx="600" cy="56" r="4"/><circle cx="622" cy="70" r="4"/><circle cx="606" cy="84" r="4"/></g>' +
+      '<rect x="0" y="104" width="760" height="16" fill="var(--water)"/></svg>',
+    'lake': '<svg viewBox="0 0 760 120" role="img" aria-label="ทะเลสาบซีหู เจดีย์ และต้นหลิว"><rect width="760" height="120" fill="var(--sky)"/>' +
+      '<g fill="#fff" opacity=".8"><use href="#s-cloud" x="90" y="10" width="100" height="40"/><use href="#s-cloud" x="470" y="18" width="80" height="32"/></g>' +
+      '<path d="M0 78 L120 46 L230 72 L330 40 L440 74 L560 50 L760 76 V120 H0 Z" fill="var(--jade)" opacity=".45"/>' +
+      '<g fill="var(--indigo)"><use href="#s-pagoda" x="620" y="4" width="62" height="104"/></g><rect x="0" y="92" width="760" height="28" fill="var(--water)"/>' +
+      '<path d="M70 0 Q60 40 76 80 M92 0 Q84 44 98 82 M114 0 Q104 40 118 78" stroke="var(--jade)" stroke-width="3" fill="none"/>' +
+      '<path d="M300 102 Q330 112 360 102 Z" fill="var(--seal)"/><rect x="326" y="86" width="3" height="16" fill="var(--indigo)"/><path d="M329 88 L346 98 H329 Z" fill="var(--gold)"/></svg>',
+    'night-plane': '<svg viewBox="0 0 760 120" role="img" aria-label="เครื่องบินบินในยามค่ำ"><rect width="760" height="120" fill="var(--sky)"/>' +
+      '<circle cx="620" cy="40" r="22" fill="var(--gold)"/><circle cx="632" cy="34" r="19" fill="var(--sky)"/>' +
+      '<g fill="#fff" opacity=".7"><use href="#s-cloud" x="150" y="52" width="110" height="44"/><use href="#s-cloud" x="420" y="66" width="90" height="36"/></g>' +
+      '<g fill="var(--indigo)"><use href="#s-plane" x="300" y="22" width="140" height="56"/></g><rect x="0" y="108" width="760" height="12" fill="var(--water)"/></svg>'
+  };
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function lines(s) { return esc(s).replace(/\n/g, '<br>'); }
+  function yes(v) { return /^(y|yes|true|1|✓|✔)$/i.test(String(v || '').trim()); }
+
+  // [14] = ป้ายสายรถไฟฟ้า, {ข้อความ} = ตัวอักษรเล็กสีจาง (เช่น {เปลี่ยนเป็น})
+  function route(s) {
+    return esc(s)
+      .replace(/\[(\d{1,2})\]/g, function (m, n) { return '<span class="ln l' + n + '">' + n + '</span>'; })
+      .replace(/\{([^}]*)\}/g, '<i>$1</i>');
+  }
+  // แท็กคั่นด้วย ; ขึ้นต้น ! = แดง, ขึ้นต้น + = เขียว
+  function tags(s) {
+    if (!s) return '';
+    var out = String(s).split(';').map(function (t) { return t.trim(); }).filter(Boolean).map(function (t) {
+      var cls = '';
+      if (t.charAt(0) === '!') { cls = ' red'; t = t.slice(1).trim(); }
+      else if (t.charAt(0) === '+') { cls = ' green'; t = t.slice(1).trim(); }
+      return '<span class="tag' + cls + '">' + esc(t) + '</span>';
+    });
+    return out.length ? '<div class="tags">' + out.join('') + '</div>' : '';
+  }
+
+  function loadTodo() { try { return JSON.parse(localStorage.getItem(TKEY) || '{}'); } catch (e) { return {}; } }
+  function saveTodo(o) { try { localStorage.setItem(TKEY, JSON.stringify(o)); } catch (e) {} }
+
+  function edBtn(attr, val, label, inline) {
+    return '<button type="button" class="ed-pill' + (inline ? ' inline' : '') + '" ' + attr + '="' + esc(val) + '" aria-label="' + label + '">✏️</button>';
+  }
+
+  function renderStop(s) {
+    var h = '<li class="stop' + (yes(s.key) ? ' key' : '') + '"><div class="when">' + lines(s.time) + '</div><div class="what">';
+    h += '<h3>' + esc(s.title) + '</h3>';
+    if (editMode && s._row) h += edBtn('data-edit-stop', s._row, 'แก้ไขจุดนี้');
+    if (s.route) h += '<p class="route">' + route(s.route) + '</p>';
+    if (s.detail) {
+      String(s.detail).split('\n').forEach(function (ln) { if (ln.trim()) h += '<p>' + esc(ln) + '</p>'; });
+    }
+    h += tags(s.tags) + '</div></li>';
+    return h;
+  }
+
+  function renderDay(num, info, stops) {
+    var normal = stops.filter(function (s) { return (s.type || 'stop').toLowerCase() !== 'eat'; });
+    var eats = stops.filter(function (s) { return (s.type || '').toLowerCase() === 'eat'; });
+    var banner = BANNERS[(info.banner || '').toLowerCase()] || BANNERS.bund;
+    var h = '<article class="day" id="day-' + num + '"><div class="banner">' + banner + '</div>';
+    h += '<div class="dayhead"><small>วันที่ ' + num + (info.datelabel ? ' · ' + esc(info.datelabel) : '') + '</small>';
+    h += '<h2>' + esc(info.title || ('วันที่ ' + num)) + '</h2>';
+    if (info.subtitle) h += '<p>' + esc(info.subtitle) + '</p>';
+    if (editMode) h += edBtn('data-edit-day', num, 'แก้หัววัน');
+    h += '</div>';
+    if (eats.length) {
+      h += '<div class="eats"><h3>🍜 ตัวเลือกมื้ออาหาร</h3><ul>';
+      eats.forEach(function (e) { h += '<li><b>' + esc(e.title) + '</b>' + (e.detail ? ' ' + esc(e.detail) : '') + (editMode && e._row ? edBtn('data-edit-stop', e._row, 'แก้ไขรายการนี้', true) : '') + '</li>'; });
+      h += '</ul></div>';
+    }
+    if (normal.length) h += '<ol class="tl">' + normal.map(renderStop).join('') + '</ol>';
+    if (editMode) h += '<button type="button" class="ed-add" data-add-stop="' + num + '">＋ เพิ่มจุดแวะ</button>';
+    if (info.note) h += '<div class="note' + ((info.notestyle || '').toLowerCase() === 'red' ? ' red' : '') + '">' + esc(info.note) + '</div>';
+    return h + '</article>';
+  }
+
+  function render(d) {
+    lastData = d;
+    var S = d.settings || {};
+    var html = '<header class="hero">' + HERO_SVG + '<div class="hero-text"><h1>' + esc(S.pagetitle || S.pageTitle || 'แพลนเที่ยว') + '</h1>';
+    if (S.subtitle) html += '<p>' + esc(S.subtitle) + '</p>';
+    if (S.facts) {
+      html += '<div class="facts">' + String(S.facts).split(';').map(function (f) { return f.trim(); }).filter(Boolean)
+        .map(function (f) { return '<span class="fact">' + esc(f) + '</span>'; }).join('') + '</div>';
+    }
+    html += '</div></header>';
+
+    // จัดกลุ่มจุดแวะตามวัน
+    var byDay = {};
+    (d.stops || []).forEach(function (s, i) {
+      var n = parseInt(s.day, 10);
+      if (!isFinite(n)) return;
+      s._i = i;
+      (byDay[n] = byDay[n] || []).push(s);
+    });
+    var infoByDay = {};
+    (d.days || []).forEach(function (r) {
+      var n = parseInt(r.day, 10);
+      if (isFinite(n)) infoByDay[n] = r;
+    });
+    var nums = Object.keys(Object.assign({}, byDay, infoByDay)).map(Number).sort(function (a, b) { return a - b; });
+
+    if (nums.length) {
+      html += '<ul class="chips" aria-label="ข้ามไปแต่ละวัน">' + nums.map(function (n) {
+        var inf = infoByDay[n] || {};
+        return '<li><a href="#day-' + n + '"><b>' + esc(inf.datelabel || ('วันที่ ' + n)) + '</b><span>' + esc(inf.chip || inf.title || '') + '</span></a></li>';
+      }).join('') + '</ul>';
+    }
+
+    // ตั๋วเครื่องบิน
+    var flights = d.flights || [];
+    if (flights.length || (d.pay || []).length) {
+      html += '<section class="block"><h2>✈️ ตั๋วเครื่องบิน</h2>';
+      if (flights.length) {
+        var order = [], groups = {};
+        flights.forEach(function (f) {
+          var k = f.airline || '-';
+          if (!groups[k]) { groups[k] = []; order.push(k); }
+          groups[k].push(f);
+        });
+        html += '<div class="flightgrid">' + order.map(function (k) {
+          var g = groups[k];
+          var bag = '';
+          g.forEach(function (f) { if (!bag && f.baggage) bag = f.baggage; });
+          return '<div class="flight"><h3>' + esc(k) + '</h3>' + g.map(function (f) {
+            return '<div class="leg"><span>' + esc(f.dir) + ' ' + esc(f.flight) + (f.date ? '<br><em>' + esc(f.date) + '</em>' : '') +
+              '</span><span>' + esc(f.from) + '<br>' + esc(f.to) + '</span></div>';
+          }).join('') + (bag ? '<p class="bag">' + esc(bag) + '</p>' : '') + '</div>';
+        }).join('') + '</div>';
+      }
+      if ((d.pay || []).length) {
+        html += '<table class="paytable" aria-label="ค่าตั๋วเครื่องบิน">' + d.pay.map(function (p) {
+          return '<tr><td>' + esc(p.name) + '</td><td>' + esc(p.amount) + '</td></tr>';
+        }).join('') + '</table>';
+      }
+      html += '</section>';
+    }
+
+    // วันต่างๆ
+    nums.forEach(function (n) {
+      var list = (byDay[n] || []).slice();
+      var allNum = list.every(function (s) { return isFinite(parseFloat(s.order)); });
+      if (allNum) list.sort(function (a, b) { return (parseFloat(a.order) - parseFloat(b.order)) || (a._i - b._i); });
+      html += renderDay(n, infoByDay[n] || {}, list);
+    });
+
+    // เช็กลิสต์ และจุดที่ควรเช็ก
+    var todo = (d.lists || []).filter(function (r) { return (r.type || '').toLowerCase() === 'todo'; });
+    var flag = (d.lists || []).filter(function (r) { return (r.type || '').toLowerCase() === 'flag'; });
+    if (todo.length) {
+      var saved = loadTodo();
+      html += '<section class="block"><h2>📝 ต้องจองและเตรียมก่อนไป</h2><ul class="check" id="todo">' + todo.map(function (r) {
+        return '<li><label><input type="checkbox" data-k="' + esc(r.text) + '"' + (saved[r.text] ? ' checked' : '') + '><span>' + esc(r.text) +
+          (r.note ? '<small>' + esc(r.note) + '</small>' : '') + '</span></label></li>';
+      }).join('') + '</ul></section>';
+    }
+    if (flag.length) {
+      html += '<section class="block"><h2>🔎 จุดที่ควรเช็กอีกที</h2><ol class="flags">' + flag.map(function (r) {
+        return '<li>' + esc(r.text) + (r.note ? ' <small>' + esc(r.note) + '</small>' : '') + '</li>';
+      }).join('') + '</ol></section>';
+    }
+
+    html += '<footer>' + (S.footer ? esc(S.footer) + '<br>' : '') + (d.updated ? 'ข้อมูลล่าสุด ' + esc(d.updated) : '') + '</footer>';
+    app.innerHTML = html;
+  }
+
+  app.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t && t.matches && t.matches('#todo input')) {
+      var s = loadTodo();
+      if (t.checked) s[t.getAttribute('data-k')] = true; else delete s[t.getAttribute('data-k')];
+      saveTodo(s);
+    }
+  });
+
+  function showError(msg) {
+    app.innerHTML = '<div class="state"><b>โหลดข้อมูลไม่สำเร็จ</b>' + esc(msg) + '<br><button type="button" class="btn" id="retry">ลองใหม่</button></div>';
+    var r = document.getElementById('retry');
+    if (r) r.addEventListener('click', function () { load(true); });
+    barEl.hidden = true;
+  }
+
+  // ดึงข้อมูล: ถ้าเปิดใน Apps Script ใช้ google.script.run, ถ้าอยู่ที่อื่น (GitHub Pages) ใช้ fetch จาก API_URL
+  function fetchData(fresh, ok, fail) {
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      google.script.run.withSuccessHandler(ok).withFailureHandler(fail).getData(!!fresh);
+      return;
+    }
+    if (!API_URL) { fail(new Error('ยังไม่ได้ใส่ API_URL ในไฟล์ index.html (ดูตรงตั้งค่าด้านบนของสคริปต์)')); return; }
+    var url = API_URL + (API_URL.indexOf('?') < 0 ? '?' : '&') + 'format=json' + (fresh ? '&fresh=1' : '');
+    fetch(url)
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(ok, fail);
+  }
+
+  var hasData = false;
+  function load(fresh) {
+    refreshBtn.disabled = true;
+    refreshBtn.textContent = 'กำลังโหลด…';
+    fetchData(!!fresh, function (d) {
+      try { render(d); hasData = true; } catch (err) { showError('แสดงผลไม่สำเร็จ: ' + (err && err.message)); }
+      barEl.hidden = false;
+      refreshBtn.disabled = false;
+      refreshBtn.textContent = '🔄 รีเฟรช';
+    }, function (err) {
+      if (!hasData) { showError((err && err.message) || String(err)); return; }
+      refreshBtn.disabled = false;
+      refreshBtn.textContent = '🔄 ลองใหม่';
+    });
+  }
+
+  // ===== โหมดแก้ไข =====
+  var dlg = document.getElementById('dlg');
+  var current = null;
+  var delTimer = null;
+
+  function openDlg(html) {
+    dlg.innerHTML = html;
+    if (dlg.showModal) { if (!dlg.open) dlg.showModal(); } else { dlg.setAttribute('open', ''); }
+  }
+  function closeDlg() {
+    if (dlg.close) { if (dlg.open) dlg.close(); } else { dlg.removeAttribute('open'); }
+    dlg.innerHTML = '';
+    if (delTimer) { clearTimeout(delTimer); delTimer = null; }
+  }
+  function setErr(msg) { var el = document.getElementById('dlgerr'); if (el) el.textContent = msg || ''; }
+  function busy(on) { Array.prototype.forEach.call(dlg.querySelectorAll('button'), function (b) { b.disabled = on; }); }
+
+  function callApi(req, ok, fail) {
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      google.script.run.withSuccessHandler(ok).withFailureHandler(fail).apiEdit(req);
+      return;
+    }
+    if (!API_URL) { fail(new Error('ยังไม่ได้ใส่ API_URL ในไฟล์ index.html')); return; }
+    fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(req) })
+      .then(function (r) { return r.json(); })
+      .then(ok, fail);
+  }
+
+  function forgetPin() { pin = ''; try { sessionStorage.removeItem('trip-pin'); } catch (e) {} }
+
+  function askPin(msg) {
+    openDlg('<form id="pinform" novalidate><h3>ใส่ PIN เพื่อแก้ไข</h3>' +
+      '<p class="hint">PIN ที่ตั้งไว้ในชีต (เมนู 🏮 Trip &gt; ตั้ง PIN แก้ไขหน้าเว็บ)</p>' +
+      '<div class="f"><label for="f-pin">PIN</label><input id="f-pin" name="pin" type="password" autocomplete="off"></div>' +
+      '<p class="err" id="dlgerr">' + esc(msg || '') + '</p>' +
+      '<div class="dbtn"><button type="button" class="btn ghost" data-close>ยกเลิก</button><button type="submit" class="btn">ตกลง</button></div></form>');
+    var el = document.getElementById('f-pin'); if (el) el.focus();
+  }
+
+  function enterEdit() {
+    editMode = true;
+    editBtn.textContent = '✅ เสร็จ';
+    app.classList.add('editing');
+    if (lastData) render(lastData);
+  }
+  function leaveEdit() {
+    editMode = false;
+    editBtn.textContent = '✏️ แก้ไข';
+    app.classList.remove('editing');
+    if (lastData) render(lastData);
+  }
+
+  function tryPin(p) {
+    busy(true);
+    callApi({ action: 'check', pin: p }, function (r) {
+      busy(false);
+      if (r && r.ok) {
+        pin = p;
+        try { sessionStorage.setItem('trip-pin', p); } catch (e) {}
+        closeDlg();
+        enterEdit();
+      } else {
+        forgetPin();
+        askPin((r && r.error) || 'ตรวจ PIN ไม่สำเร็จ');
+      }
+    }, function (err) {
+      busy(false);
+      forgetPin();
+      askPin('เชื่อมต่อไม่ได้: ' + ((err && err.message) || err));
+    });
+  }
+
+  editBtn.addEventListener('click', function () {
+    if (editMode) { leaveEdit(); return; }
+    if (pin) { tryPin(pin); } else { askPin(''); }
+  });
+
+  function formVals(form) {
+    var v = {};
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name) return;
+      v[el.name] = el.type === 'checkbox' ? (el.checked ? 'Y' : '') : el.value;
+    });
+    return v;
+  }
+  function opt(val, label, sel) { return '<option value="' + esc(val) + '"' + (sel ? ' selected' : '') + '>' + esc(label) + '</option>'; }
+
+  function openStopForm(s, day) {
+    var isNew = !s;
+    s = s || { day: String(day), order: '', time: '', title: '', detail: '', route: '', tags: '', key: '', type: 'stop' };
+    current = { kind: 'stop', row: s._row || 0, expect: s.title || '', day: String(s.day || day) };
+    var type = (s.type || 'stop').toLowerCase();
+    openDlg('<form id="dform" novalidate><h3>' + (isNew ? 'เพิ่มจุดแวะ วันที่ ' + esc(day) : 'แก้ไขจุดแวะ') + '</h3>' +
+      '<div class="row2"><div class="f"><label for="f-time">เวลา</label><textarea id="f-time" name="time" rows="2">' + esc(s.time) + '</textarea></div>' +
+      '<div class="f"><label for="f-order">ลำดับ</label><input id="f-order" name="order" type="text" inputmode="numeric" value="' + esc(s.order) + '"></div></div>' +
+      '<div class="f"><label for="f-title">ชื่อจุดแวะ</label><input id="f-title" name="title" type="text" value="' + esc(s.title) + '"></div>' +
+      '<div class="f"><label for="f-detail">รายละเอียด</label><textarea id="f-detail" name="detail" rows="3">' + esc(s.detail) + '</textarea></div>' +
+      '<div class="f"><label for="f-route">การเดินทาง</label><textarea id="f-route" name="route" rows="2">' + esc(s.route) + '</textarea>' +
+      '<small>พิมพ์ [14] = ป้ายสายรถไฟฟ้า, {เปลี่ยนเป็น} = ตัวเล็กสีจาง</small></div>' +
+      '<div class="f"><label for="f-tags">ป้าย (คั่นด้วย ;)</label><input id="f-tags" name="tags" type="text" value="' + esc(s.tags) + '">' +
+      '<small>ขึ้นต้น ! = แดง, ขึ้นต้น + = เขียว เช่น 🚇 ¥7; !วัดปิด 16:30</small></div>' +
+      '<div class="f"><label for="f-type">ประเภท</label><select id="f-type" name="type">' + opt('stop', 'จุดแวะในไทม์ไลน์', type !== 'eat') + opt('eat', 'ตัวเลือกอาหาร (กล่องอาหาร)', type === 'eat') + '</select></div>' +
+      '<label class="chk"><input type="checkbox" name="key" value="Y"' + (yes(s.key) ? ' checked' : '') + '> จุดสำคัญ (จุดสีแดงบนไทม์ไลน์)</label>' +
+      '<p class="err" id="dlgerr"></p><div class="dbtn">' +
+      (isNew ? '' : '<button type="button" class="btn danger" data-delete>🗑️ ลบ</button>') +
+      '<button type="button" class="btn ghost" data-close>ยกเลิก</button><button type="submit" class="btn">บันทึก</button></div></form>');
+    var el = document.getElementById('f-title'); if (el && isNew) el.focus();
+  }
+
+  function openDayForm(num) {
+    var info = (lastData && lastData.days || []).filter(function (r) { return parseInt(r.day, 10) === num; })[0] || { day: String(num) };
+    current = { kind: 'day', row: info._row || 0, expect: String(num), day: String(num) };
+    var banner = (info.banner || '').toLowerCase();
+    var bopts = Object.keys(BANNERS).map(function (k) { return opt(k, k, k === banner); }).join('');
+    var ns = (info.notestyle || '').toLowerCase();
+    openDlg('<form id="dform" novalidate><h3>แก้หัววันที่ ' + num + '</h3>' +
+      '<div class="f"><label for="d-datelabel">ป้ายวัน (เช่น จันทร์ 21 ธ.ค.)</label><input id="d-datelabel" name="datelabel" type="text" value="' + esc(info.datelabel) + '"></div>' +
+      '<div class="f"><label for="d-chip">ข้อความสั้นในปุ่มข้ามวัน</label><input id="d-chip" name="chip" type="text" value="' + esc(info.chip) + '"></div>' +
+      '<div class="f"><label for="d-title">หัวข้อวัน</label><input id="d-title" name="title" type="text" value="' + esc(info.title) + '"></div>' +
+      '<div class="f"><label for="d-subtitle">คำบรรยายใต้หัวข้อ</label><input id="d-subtitle" name="subtitle" type="text" value="' + esc(info.subtitle) + '"></div>' +
+      '<div class="f"><label for="d-banner">ภาพประกอบ</label><select id="d-banner" name="banner">' + bopts + '</select></div>' +
+      '<div class="f"><label for="d-note">โน้ตท้ายวัน (เว้นว่างได้)</label><textarea id="d-note" name="note" rows="3">' + esc(info.note) + '</textarea></div>' +
+      '<div class="f"><label for="d-notestyle">สีกล่องโน้ต</label><select id="d-notestyle" name="notestyle">' + opt('yellow', 'เหลือง', ns !== 'red') + opt('red', 'แดง', ns === 'red') + '</select></div>' +
+      '<p class="err" id="dlgerr"></p><div class="dbtn">' +
+      '<button type="button" class="btn ghost" data-close>ยกเลิก</button><button type="submit" class="btn">บันทึก</button></div></form>');
+  }
+
+  function afterWrite(r) {
+    busy(false);
+    if (r && r.ok) { closeDlg(); load(true); return; }
+    var msg = (r && r.error) || 'บันทึกไม่สำเร็จ';
+    if (/PIN/.test(msg)) forgetPin();
+    setErr(msg);
+  }
+  function writeFail(err) { busy(false); setErr('เชื่อมต่อไม่ได้: ' + ((err && err.message) || err)); }
+
+  function saveCurrent(form) {
+    var v = formVals(form);
+    var req;
+    if (current.kind === 'stop') {
+      if (!String(v.title || '').trim()) { setErr('ใส่ชื่อจุดแวะก่อนนะ'); return; }
+      v.day = current.day;
+      req = { action: 'saveStop', row: current.row, expect: current.expect, values: v };
+    } else {
+      v.day = current.day;
+      req = { action: 'saveDay', row: current.row, expect: current.expect, values: v };
+    }
+    req.pin = pin;
+    busy(true);
+    callApi(req, afterWrite, writeFail);
+  }
+
+  function deleteCurrent(btn) {
+    if (!delTimer) {
+      btn.textContent = 'กดอีกครั้งเพื่อลบ';
+      delTimer = setTimeout(function () { delTimer = null; btn.textContent = '🗑️ ลบ'; }, 3000);
+      return;
+    }
+    clearTimeout(delTimer); delTimer = null;
+    busy(true);
+    callApi({ action: 'deleteStop', pin: pin, row: current.row, expect: current.expect }, afterWrite, writeFail);
+  }
+
+  app.addEventListener('click', function (e) {
+    if (!editMode || !e.target.closest) return;
+    var t = e.target.closest('[data-edit-stop],[data-edit-day],[data-add-stop]');
+    if (!t) return;
+    if (t.hasAttribute('data-edit-stop')) {
+      var row = parseInt(t.getAttribute('data-edit-stop'), 10);
+      var st = (lastData && lastData.stops || []).filter(function (x) { return parseInt(x._row, 10) === row; })[0];
+      if (st) openStopForm(st);
+    } else if (t.hasAttribute('data-edit-day')) {
+      openDayForm(parseInt(t.getAttribute('data-edit-day'), 10));
+    } else {
+      openStopForm(null, t.getAttribute('data-add-stop'));
+    }
+  });
+
+  dlg.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target;
+    if (f.id === 'pinform') { var p = String(f.elements.pin.value || '').trim(); if (p) tryPin(p); }
+    else if (f.id === 'dform') { saveCurrent(f); }
+  });
+  dlg.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('button') : null;
+    if (!t) return;
+    if (t.hasAttribute('data-close')) closeDlg();
+    else if (t.hasAttribute('data-delete')) deleteCurrent(t);
+  });
+
+  refreshBtn.addEventListener('click', function () { load(true); });
+  load(false);
+})();
+</script>
+</body>
+</html>
